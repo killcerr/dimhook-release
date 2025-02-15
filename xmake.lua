@@ -1,8 +1,20 @@
 add_rules("mode.debug", "mode.release")
+add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 add_requires("polyhook2", "libhat 5cf79adf86152233371b43adab5a0f9db6daa4e7", "nlohmann_json")
-add_repositories("iceblcokmc https://github.com/IceBlcokMC/xmake-repo.git")
-add_requires("endstone 0.5.7.1")
+package("endstone")
+    set_kind("library", {headeronly = true})
+    set_homepage("https://github.com/EndstoneMC/endstone")
+    set_description("Endstone - High-level Plugin API for Bedrock Dedicated Servers (BDS), in both Python and C++")
+    set_license("Apache-2.0")
+
+    add_urls("https://github.com/EndstoneMC/endstone.git")
+
+    on_install("windows", "linux", function (package)
+        os.cp("include", package:installdir())
+    end)
+package_end()
 add_requires(
+    "endstone 5310484c580f9077b436a58c8f90905f3ddff2c4",
     "entt 3.14.0",
     "microsoft-gsl 4.0.0",
     "nlohmann_json 3.11.3",
@@ -15,7 +27,6 @@ add_requires(
 add_requires("fmt >=10.0.0 <11.0.0")
 option("hijack", {default = false}) -- enable dll hijack to inject BDS
 target("dimhook")
-    set_options("type")
     set_languages("c++20")
     set_kind("shared")
     add_packages("polyhook2", "libhat", "nlohmann_json")
