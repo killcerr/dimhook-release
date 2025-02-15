@@ -1,3 +1,4 @@
+# This plugin maybe DESTORY your world, do not use it in produce environment
 # dimhook
 code is release in ```main.cpp```.\
 current support version : BDS & X64Client windows 1.21.60.
