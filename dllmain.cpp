@@ -65,7 +65,7 @@ PLH::x64Detour *detour;
 uint64_t (*dim_ctor)(void *_this, void *a, int i, height_range_t r, void *b,
                      std::string n);
 uint64_t dim_ctor_hook(void *_this, void *a, int i, height_range_t r, void *b,
-                       std::string n) {
+                       std::string n) { // Dimension::Dimension
   detour->unHook();
   try {
     r.max = config[n]["max"].get<int>();
@@ -170,8 +170,9 @@ public:
 std::mutex mutex;
 PLH::x64Detour *net_send_detour;
 void (*net_send)(void *, void *id, pkt_t *pkt, unsigned char sub);
-std::shared_ptr<pkt_t> (*make_pkt)(int);
-void net_send_hook(void *_this, void *id, pkt_t *pkt, unsigned char sub) {
+std::shared_ptr<pkt_t> (*make_pkt)(int); // MinecraftPackets::createPacket
+void net_send_hook(void *_this, void *id, pkt_t *pkt,
+                   unsigned char sub) { // NetworkSystem::send
   mutex.lock();
   net_send_detour->unHook();
   std::cout << pkt->get_name() << std::endl;
